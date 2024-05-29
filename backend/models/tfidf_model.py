@@ -15,5 +15,5 @@ class TFIDFModel:
         cosine_similarities = linear_kernel(query_vector, self.tfidf_matrix).flatten()
         related_indices = cosine_similarities.argsort()[:-n-1:-1]
 
-        similar_games = data.iloc[related_indices][['Title', 'Link', 'Game Description', 'Popular Tags']].to_dict(orient='records')
+        similar_games = data.iloc[related_indices][['title', 'link', 'description', 'popular_tags']].to_dict(orient='records')
         return similar_games

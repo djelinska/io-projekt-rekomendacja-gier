@@ -51,10 +51,18 @@ def preprocess_data(games_df):
     print('Liczba pustych kolumn z opisem gry:', games_df['Game Description'].isna().sum())
     print('Liczba pustych list z popularnymi tagami:', games_df['Popular Tags'].isnull().sum())
 
-    games_df['Game Description'] = games_df['Game Description'].fillna('')
+    games_df.fillna('', inplace=True)
     games_df['processed_popular_tags'] = games_df['Popular Tags'].apply(process_tags)
     games_df['game_content'] = games_df['Game Description'] + ' ' + games_df['processed_popular_tags']
     games_df['game_content'] = games_df['game_content'].apply(process_text)
+
+    new_column_names = {
+        'Title': 'title',
+        'Link': 'link',
+        'Game Description': 'description',
+        'Popular Tags': 'popular_tags',
+    }
+    games_df.rename(columns=new_column_names, inplace=True)
 
     with open('../data/processed_games.pkl', 'wb') as f:
         pickle.dump(games_df, f)

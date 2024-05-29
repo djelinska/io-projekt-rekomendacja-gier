@@ -1,9 +1,12 @@
 import pickle
 
 from flask import Flask, jsonify, request
+from flask_cors import CORS
+
 from backend.models.tfidf_model import TFIDFModel
 
 app = Flask(__name__)
+CORS(app)
 
 with open('data/processed_games.pkl', 'rb') as f:
     processed_games_df = pickle.load(f)
@@ -14,7 +17,7 @@ model.train(processed_games_df['game_content'].tolist())
 
 @app.route('/api/games', methods=['GET'])
 def get_games():
-    games = processed_games_df[['Title', 'Link', 'Game Description', 'Popular Tags']].to_dict(orient='records')
+    games = processed_games_df[['title', 'link', 'description', 'popular_tags']].sample(5000).to_dict(orient='records')
     return jsonify(games), 200
 
 
@@ -25,7 +28,7 @@ def recommend():
         return jsonify({'error': 'Missing title parameter'}), 400
 
     try:
-        game_content = processed_games_df.loc[processed_games_df['Title'] == query_title, 'game_content'].iloc[0]
+        game_content = processed_games_df.loc[processed_games_df['title'] == query_title, 'game_content'].iloc[0]
     except IndexError:
         return jsonify({'error': 'Game title not found'}), 404
 
