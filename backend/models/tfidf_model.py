@@ -10,7 +10,7 @@ class TFIDFModel:
     def train(self, corpus):
         self.tfidf_matrix = self.vectorizer.fit_transform(corpus)
 
-    def find_similar_games(self, query, data, n=11):
+    def find_similar_games(self, query, data, n=10):
         query_vector = self.vectorizer.transform([query])
         cosine_similarities = linear_kernel(query_vector, self.tfidf_matrix).flatten()
         related_indices = cosine_similarities.argsort()[:-n-1:-1]
