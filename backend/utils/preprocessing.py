@@ -1,3 +1,4 @@
+import ast
 import pickle
 import re
 
@@ -38,7 +39,7 @@ def process_text(game_content):
 
 def process_tags(tags):
     if isinstance(tags, str):
-        tags = eval(tags)
+        return ast.literal_eval(tags)
     if isinstance(tags, list):
         return ' '.join(tags)
     return ''
@@ -52,6 +53,7 @@ def preprocess_data(games_df):
     print('Liczba pustych list z popularnymi tagami:', games_df['Popular Tags'].isnull().sum())
 
     games_df.fillna('', inplace=True)
+    games_df['Popular Tags'] = games_df['Popular Tags'].apply(process_tags)
     games_df['processed_popular_tags'] = games_df['Popular Tags'].apply(process_tags)
     games_df['game_content'] = games_df['Game Description'] + ' ' + games_df['processed_popular_tags']
     games_df['game_content'] = games_df['game_content'].apply(process_text)

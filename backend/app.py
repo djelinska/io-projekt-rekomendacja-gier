@@ -15,10 +15,17 @@ model = TFIDFModel()
 model.train(processed_games_df['game_content'].tolist())
 
 
-@app.route('/api/games', methods=['GET'])
-def get_games():
-    games = processed_games_df[['title', 'link', 'description', 'popular_tags']].sample(5000).to_dict(orient='records')
-    return jsonify(games), 200
+@app.route('/api/search', methods=['GET'])
+def search():
+    query = request.args.get('query', '').lower()
+    if not query:
+        return jsonify({'error': 'Missing query parameter'}), 400
+
+    results = processed_games_df[processed_games_df['title'].str.contains(query, case=False, na=False)]
+    results_sorted = results.sort_values(by='title')
+    results_list = results_sorted['title'].tolist()
+
+    return jsonify(results_list)
 
 
 @app.route('/api/recommend', methods=['GET'])
