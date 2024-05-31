@@ -1,6 +1,6 @@
 const SearchResult = ({ title, handleRecommend }) => {
 	return (
-		<li className='px-4 py-2 flex justify-between items-center border-b border-b-gray-700'>
+		<li className='mx-4 py-2 flex justify-between items-center border-b border-b-gray-700'>
 			<p>{title}</p>
 			<button
 				onClick={() => handleRecommend(title)}

@@ -65,7 +65,7 @@ const App = () => {
 			<div className='grid grid-cols-2 gap-4'>
 				{games &&
 					games.map((game, index) => (
-						<GameCard key={index} game={game} selectedGame={selectedGame} />
+						<GameCard key={index} game={game} selectedGame={selectedGame}/>
 					))}
 			</div>
 		</div>
