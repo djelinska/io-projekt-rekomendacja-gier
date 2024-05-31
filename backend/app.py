@@ -3,7 +3,7 @@ import pickle
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 
-from backend.models.tfidf_model import TFIDFModel
+from models.tfidf_model import TFIDFModel
 
 app = Flask(__name__)
 CORS(app)
